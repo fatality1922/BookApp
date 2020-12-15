@@ -4,6 +4,7 @@
     const select = {
         wrapper: {
             booksList: '.books-list',
+            filters: '.filters',
         },
         templateOf: {
             booksList: '#template-book',
@@ -13,12 +14,13 @@
         }
     };
     const favoriteBooks = [];
+    const filters = [];
     const templates = {
         booksList: Handlebars.compile(document.querySelector(select.templateOf.booksList).innerHTML),
     };
 
-
     const bookListWrapper = document.querySelector(select.wrapper.booksList);
+    const filterWrapper = document.querySelector(select.wrapper.filters);
 
     const render = function () {
         for (let book of dataSource.books) {
@@ -44,7 +46,38 @@
                 }
             }
         });
-    }
+
+        filterWrapper.addEventListener('click', function (event) {
+            const clickedElement = event.target;
+            if (clickedElement.tagName === 'INPUT' && clickedElement.type === 'checkbox' && clickedElement.name === 'filter') {
+                if (clickedElement.checked) {
+                    filters.push(clickedElement.value);
+                    filterBooks();
+                } else {
+                    filters.splice(filters.indexOf(clickedElement.value), 1);
+                    filterBooks();
+                }
+            }
+        });
+    };
+
+    const filterBooks = function () {
+        for (let book of dataSource.books) {
+            const bookToBeHidden = document.querySelector('.book__image[data-id="' + book.id + '"]');
+            let shouldBeHidden = false;
+            for (let filterName of filters) {
+                if (!book.details[filterName]) {
+                    shouldBeHidden = true;
+                    break;
+                }
+            }
+            if (shouldBeHidden) {
+                bookToBeHidden.classList.add('hidden');
+            } else {
+                bookToBeHidden.classList.remove('hidden');
+            }
+        }
+    };
 
     render();
     initActions();
