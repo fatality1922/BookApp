@@ -27,6 +27,10 @@
             const generatedHTML = templates.booksList(book);
             const element = utils.createDOMFromHTML(generatedHTML);
             bookListWrapper.appendChild(element);
+            const ratingBgc = determineRatingBgc(book.rating);
+            const ratingWidth = book.rating * 10;
+            booksList.classList.book_rating_fill.style.background = ratingBgc;
+            booksList.classList.book_rating_fill.style.width = ratingWidth;
         }
     };
 
@@ -77,6 +81,25 @@
                 bookToBeHidden.classList.remove('hidden');
             }
         }
+    };
+
+    const determineRatingBgc = function (rating) {
+
+        let background = '';
+
+        if (rating < 6) {
+            background = 'linear-gradient(to bottom,  #fefcea 0%, #f1da36 100%);';
+        }
+        if (rating > 6 && rating <= 8) {
+            background = 'linear-gradient(to bottom, #b4df5b 0%,#b4df5b 100%);';
+        }
+        if (rating > 8 && rating <= 9) {
+            background = 'linear-gradient(to bottom, #299a0b 0%, #299a0b 100%);';
+        }
+        if (rating > 9) {
+            background = 'linear-gradient(to bottom, #ff0084 0%,#ff0084 100%);';
+        }
+        return background;
     };
 
     render();
