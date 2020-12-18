@@ -24,13 +24,19 @@
 
     const render = function () {
         for (let book of dataSource.books) {
-            const generatedHTML = templates.booksList(book);
-            const element = utils.createDOMFromHTML(generatedHTML);
-            bookListWrapper.appendChild(element);
             const ratingBgc = determineRatingBgc(book.rating);
             const ratingWidth = book.rating * 10;
-            booksList.classList.book_rating_fill.style.background = ratingBgc;
-            booksList.classList.book_rating_fill.style.width = ratingWidth;
+            const generatedHTML = templates.booksList({
+                ...book,
+                ratingBgc, 
+                ratingWidth,
+            });
+            const element = utils.createDOMFromHTML(generatedHTML);
+            bookListWrapper.appendChild(element);
+
+            // const ratingWrapper = element.querySelector('book_rating_fill');
+            // ratingWrapper.style.background = ratingBgc;
+            // ratingWrapper.style.width = ratingWidth;
         }
     };
 
