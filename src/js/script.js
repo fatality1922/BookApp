@@ -51,9 +51,7 @@
                 const element = utils.createDOMFromHTML(generatedHTML);
                 this.dom.bookList.appendChild(element);
 
-                const ratingWrapper = element.querySelector('.book_rating_fill');
-                ratingWrapper.style.background = ratingBgc;
-                ratingWrapper.style.width = ratingWidth;
+
             }
         }
 
@@ -75,7 +73,7 @@
                 }
             });
 
-            this.filterWrapper.addEventListener('click', function (event) {
+            this.dom.filters.addEventListener('click', function (event) {
                 const clickedElement = event.target;
                 if (clickedElement.tagName === 'INPUT' && clickedElement.type === 'checkbox' && clickedElement.name === 'filter') {
                     if (clickedElement.checked) {
@@ -90,12 +88,11 @@
         }
 
         filterBooks() {
-            const filters = []; //do konstruktora
 
             for (let book of dataSource.books) {
                 const bookToBeHidden = document.querySelector('.book__image[data-id="' + book.id + '"]');
                 let shouldBeHidden = false;
-                for (let filterName of filters) {
+                for (let filterName of this.filters) {
                     if (!book.details[filterName]) {
                         shouldBeHidden = true;
                         break;
